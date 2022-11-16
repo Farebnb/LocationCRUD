@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -38,9 +39,13 @@ public class LocationController {
         return new ResponseEntity<>(ls.getAll(),HttpStatus.ACCEPTED);
     }
 
-
     @PutMapping("/update")
-    public ResponseEntity<Location> deleteLocation(@PathVariable("id") int id){
+    public ResponseEntity<Location> update(@RequestBody Location location){
+        return new ResponseEntity<Location>(ls.update(location), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Location> deleteLocation(@RequestParam int id){
         Location l = ls.getById(id);
         if(l == null){
             return ResponseEntity.notFound().build();
@@ -48,6 +53,12 @@ public class LocationController {
 
         ls.delete(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Location> createListing(@RequestBody LinkedHashMap<String, String> body){
+
+        return new ResponseEntity<>(ls.createLocation(body.get("city"),body.get("country"),Integer.parseInt(body.get("zip")) ), HttpStatus.ACCEPTED);
     }
 
 }

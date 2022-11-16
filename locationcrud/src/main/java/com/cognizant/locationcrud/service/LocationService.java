@@ -29,4 +29,9 @@ public class LocationService {
     public Location update(Location l){
         return lr.saveAndFlush(l);
     }
+
+    public Location createLocation(String city, String country, int zip){
+        Location l = new Location(0,city, country, zip);
+        return lr.save(l);
+    }
 }
